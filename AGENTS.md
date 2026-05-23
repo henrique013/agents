@@ -162,6 +162,13 @@ Arquivo: `docs/conventions/testes-minimos-e-lefthook.md`
 - Leia este documento ao implementar ou revisar mudanças em repositórios que usam testes automatizados e Lefthook.
 - Use este documento para equilibrar testes focados durante a implementação com a suíte geral executada no `pre-push`.
 
+### Atualização Segura e Auditável de Dependências e Plataformas
+
+Arquivo: `docs/conventions/atualizacao-segura-e-auditavel-de-dependencias-e-plataformas.md`
+
+- Leia este documento ao propor, implementar, revisar ou automatizar atualização de bibliotecas, dependências, linguagens, runtimes, frameworks, imagens, ferramentas, bancos, sistemas operacionais ou plataformas.
+- Use este documento para escolher versões suportadas, aplicar janelas de maturidade, acelerar correções de segurança e registrar evidências auditáveis.
+
 ### Arquivos Temporários
 
 Arquivo: `docs/conventions/arquivos-temporarios.md`
