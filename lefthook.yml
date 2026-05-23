@@ -1,0 +1,5 @@
+pre-push:
+  parallel: false
+  jobs:
+    - name: tests
+      run: make tests

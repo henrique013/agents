@@ -1,0 +1,24 @@
+schema: spec-driven
+
+context: |
+  This repository centralizes shared agent instructions, conventions, and skills.
+  All OpenSpec artifacts in this repository use en-US for natural-language content,
+  artifact names, change names, capability names, spec names, requirements,
+  scenarios, designs, and tasks.
+  Preserve exact technical literals, paths, commands, field names, schema terms,
+  fixed string contracts, and quoted source values even when they are not English prose.
+
+rules:
+  proposal:
+    - Write natural-language content in en-US.
+    - Use English kebab-case names for changes, capabilities, and specs.
+    - Preserve exact technical literals and contractual string values.
+  design:
+    - Write natural-language content in en-US.
+    - Preserve exact technical literals and contractual string values.
+  specs:
+    - Write requirements and scenarios in en-US.
+    - Preserve exact technical literals and contractual string values.
+  tasks:
+    - Write task descriptions in en-US.
+    - Preserve exact technical literals and contractual string values.

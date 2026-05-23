@@ -1,0 +1,14 @@
+{
+  "name": "agents",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "lefthook:install": "lefthook install"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "lefthook": "2.1.8"
+  }
+}

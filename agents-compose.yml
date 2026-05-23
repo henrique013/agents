@@ -1,0 +1,50 @@
+agents:
+  root: true
+  bootstrap:
+    skill: update-docs
+
+outputs:
+  AGENTS.md:
+    include:
+      conventions:
+        out_dir: docs/conventions
+        local:
+          tpl_dir: templates/docs/conventions-local
+        remote:
+          tpl_dir: templates/docs/conventions
+        entries:
+          - origin: local
+            from: contexto-do-projeto.tpl.md
+          - origin: local
+            from: autoria-e-publicacao-de-conventions.tpl.md
+          - origin: remote
+            from: composicao-de-instrucoes-para-repositorios-consumidores.tpl.md
+          - origin: remote
+            from: contratos-de-artefatos-para-repositorios-consumidores.tpl.md
+          - origin: remote
+            from: python-no-host-para-artefatos-estruturados.tpl.md
+          - origin: remote
+            from: padrao-de-mensagem-de-commit.tpl.md
+          - origin: remote
+            from: idiomas-pt-br-e-en-us-e-buscas-textuais.tpl.md
+          - origin: remote
+            from: apresentacao-visual-de-artefatos-tecnicos.tpl.md
+          - origin: remote
+            from: fluxo-openspec-enxuto.tpl.md
+          - origin: remote
+            from: testes-minimos-e-lefthook.tpl.md
+          - origin: remote
+            from: arquivos-temporarios.tpl.md
+          - origin: remote
+            from: uuid-em-novas-implementacoes.tpl.md
+          - origin: remote
+            from: convencoes-para-skills.tpl.md
+  skills:
+    out_dir: .codex/skills
+    local:
+      tpl_dir: templates/skills-local
+    remote:
+      tpl_dir: templates/skills
+    entries:
+      - origin: local
+        from: update-version
