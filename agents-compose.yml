@@ -34,6 +34,8 @@ outputs:
           - origin: remote
             from: testes-minimos-e-lefthook.tpl.md
           - origin: remote
+            from: atualizacao-segura-e-auditavel-de-dependencias-e-plataformas.tpl.md
+          - origin: remote
             from: arquivos-temporarios.tpl.md
           - origin: remote
             from: uuid-em-novas-implementacoes.tpl.md
