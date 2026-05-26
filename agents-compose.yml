@@ -22,6 +22,8 @@ outputs:
           - origin: remote
             from: contratos-de-artefatos-para-repositorios-consumidores.tpl.md
           - origin: remote
+            from: seguranca-para-agentes-e-conteudo-nao-confiavel.tpl.md
+          - origin: remote
             from: python-no-host-para-artefatos-estruturados.tpl.md
           - origin: remote
             from: padrao-de-mensagem-de-commit.tpl.md
@@ -30,7 +32,7 @@ outputs:
           - origin: remote
             from: apresentacao-visual-de-artefatos-tecnicos.tpl.md
           - origin: remote
-            from: fluxo-openspec-enxuto.tpl.md
+            from: fluxo-openspec-com-remocao-direta.tpl.md
           - origin: remote
             from: testes-minimos-e-lefthook.tpl.md
           - origin: remote

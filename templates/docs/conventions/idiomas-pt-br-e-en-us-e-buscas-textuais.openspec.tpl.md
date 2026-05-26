@@ -31,4 +31,4 @@ Esta subconvention define a política de idioma para o framework OpenSpec neste 
 
 - Prefira: `Update the shared convention source and regenerate published artifacts.`
 - Evite: `Atualizar a fonte da convention e regenerar artefatos publicados.`
-- Preserve: `chore(repo): sincroniza artefatos gerados da release` quando essa mensagem exata for contrato.
+- Preserve: `erro: arquivo obrigatório ausente` quando essa string exata for contrato.

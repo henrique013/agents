@@ -85,6 +85,7 @@
 ## Quando ler as conventions
 
 - Esta seção é a lista autoritativa de descoberta para as `conventions` publicadas.
+- As entradas listadas aqui são pontos de entrada de `conventions` pai; quando uma delas indicar subconventions, continue a descoberta pelas regras do documento pai.
 - O agente deve consultar esta seção em toda mudança para verificar se existe alguma `convention` acionada no caso concreto.
 - Ao criar, remover, renomear ou alterar o escopo de uma `convention`, atualize as fontes e o manifesto correspondentes.
 - Não edite manualmente `AGENTS.md` nem `conventions` ou `subconventions` finais publicadas em `docs/conventions/`; altere a fonte e o manifesto aplicáveis e use o fluxo público de publicação do repositório.

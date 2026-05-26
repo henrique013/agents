@@ -89,6 +89,6 @@ Esse fluxo:
 
 ## OpenSpec
 
-Este repositório mantém `openspec/config.yaml` e a convention de fluxo OpenSpec enxuto. Para fechar uma change descartável sem arquivar, remova diretamente o diretório ativo correspondente em `openspec/changes/<change-id>/` pela árvore de arquivos do projeto.
+Este repositório mantém `openspec/config.yaml` e seleciona a convention `fluxo-openspec-com-remocao-direta.tpl.md`. Para fechar uma change descartável sem arquivar, remova diretamente somente o diretório ativo correspondente em `openspec/changes/<change-id>/` pela árvore de arquivos do projeto.
 
 As skills OpenSpec padrão, como `openspec-explore`, `openspec-propose`, `openspec-apply-change` e `openspec-archive-change`, são esperadas como parte do ambiente OpenSpec/Codex usado pelo agente. Elas não são fonte compartilhável deste repositório por padrão.

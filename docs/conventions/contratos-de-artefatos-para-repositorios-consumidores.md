@@ -43,11 +43,11 @@ Arquivo: `docs/conventions/contratos-de-artefatos-para-repositorios-consumidores
 Arquivo: `docs/conventions/contratos-de-artefatos-para-repositorios-consumidores.arquivos-fonte.md`
 
 - Leia este documento ao criar, revisar ou ajustar uma `convention`-fonte ou `subconvention`-fonte em um repositório consumidor.
-- Use este documento para definir a estrutura mínima pública dos arquivos `.tpl.md` que entram na publicação.
+- Use este documento para definir a estrutura mínima pública dos arquivos `.tpl.md` que entram na publicação e classificar valores literais antes de tratá-los como contratos.
 
 ### Relação entre Convention Pai e Subconvention Filha
 
 Arquivo: `docs/conventions/contratos-de-artefatos-para-repositorios-consumidores.relacao-pai-filha.md`
 
 - Leia este documento ao organizar uma família de `convention` com subconventions em um repositório consumidor.
-- Use este documento para nomear arquivos, manter o vínculo pai e filha e prever os artefatos publicados.
+- Use este documento para nomear arquivos, manter o vínculo pai e filha, prever os artefatos publicados e descobrir subconventions acionadas.

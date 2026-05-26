@@ -777,6 +777,21 @@ class UpdateDocsSkillTests(unittest.TestCase):
                 "exception": self.module.ManifestError,
             },
             {
+                "name": "reserved-update-docs-with-custom-out-dir",
+                "manifest": build_manifest(
+                    "git@example.com:org/agents.git",
+                    "deadbeef",
+                    "docs/conventions",
+                    "templates/docs/conventions-local",
+                    "templates/docs/conventions",
+                    [],
+                    skills_entries=[{"origin": "remote", "from": "update-docs"}],
+                    skills_out_dir="custom/skills",
+                ),
+                "error": r"skill de bootstrap reservada: update-docs",
+                "exception": self.module.ManifestError,
+            },
+            {
                 "name": "reserved-target-via-out-dir",
                 "manifest": build_manifest(
                     "git@example.com:org/agents.git",
@@ -1403,6 +1418,22 @@ class UpdateDocsSkillTests(unittest.TestCase):
                 remote_tpl_dir,
             )
 
+        directory_source = repo_root / local_tpl_dir / "diretorio.tpl.md"
+        directory_source.mkdir(parents=True)
+
+        with self.assertRaisesRegex(
+            self.module.ValidationError,
+            r"conventions\.entries\[\]\.from inválido.*esperado arquivo \.tpl\.md.*diretório",
+        ):
+            self.module.resolve_convention_family(
+                self.module.ConventionEntry(origin="local", source="diretorio.tpl.md"),
+                repo_root,
+                checkout,
+                "docs/conventions",
+                local_tpl_dir,
+                remote_tpl_dir,
+            )
+
     def test_validate_convention_targets_uses_final_public_target_and_detects_collisions(self) -> None:
         cases = [
             {
@@ -1491,6 +1522,42 @@ class UpdateDocsSkillTests(unittest.TestCase):
                         self.module.validate_convention_targets(repo_root, resolved_checkout, context)
                 else:
                     self.module.validate_convention_targets(repo_root, resolved_checkout, context)
+
+    def test_validate_convention_targets_rejects_duplicate_resolved_targets(self) -> None:
+        repo_root = self.make_repo()
+        repository = "git@example.com:org/agents.git"
+        ref = "0123456789abcdef0123456789abcdef01234567"
+        write_text(
+            repo_root / "agents-compose.yml",
+            build_manifest(
+                repository,
+                ref,
+                "docs/conventions",
+                "templates/docs/conventions-local",
+                "templates/docs/conventions",
+                [
+                    {"origin": "local", "from": "grupo/alpha.tpl.md"},
+                    {"origin": "local", "from": "linked/alpha.tpl.md"},
+                ],
+                root=True,
+            ),
+        )
+        write_text(
+            repo_root / "templates" / "docs" / "conventions-local" / "grupo" / "alpha.tpl.md",
+            build_convention_source("Alpha Grupo", "Texto grupo.", ["card grupo"]),
+        )
+        write_text(
+            repo_root / "templates" / "docs" / "conventions-local" / "linked" / "alpha.tpl.md",
+            build_convention_source("Alpha Linked", "Texto linked.", ["card linked"]),
+        )
+        published_group = repo_root / "docs" / "conventions" / "grupo"
+        published_group.mkdir(parents=True)
+        (repo_root / "docs" / "conventions" / "linked").symlink_to(published_group, target_is_directory=True)
+
+        context = self.module.load_runtime_context(repo_root)
+
+        with self.assertRaisesRegex(self.module.ValidationError, r"destino publicado duplicado por caminho resolvido"):
+            self.module.validate_convention_targets(repo_root, None, context)
 
     def test_resolve_convention_family_respects_relative_directory_boundaries(self) -> None:
         repo_root = self.make_repo()
@@ -1883,6 +1950,33 @@ class UpdateDocsSkillTests(unittest.TestCase):
         )
         self.assertEqual(family.children, tuple())
 
+    def test_project_openspec_closing_conventions_are_publishable_when_declared(self) -> None:
+        context = self.module.RuntimeContext(
+            is_root=True,
+            source_repository=None,
+            source_ref=None,
+            conventions_out_dir="docs/conventions",
+            local_tpl_dir="templates/docs/conventions-local",
+            remote_tpl_dir="templates/docs/conventions",
+            conventions=(
+                self.module.ConventionEntry(origin="remote", source="fluxo-openspec-com-archive.tpl.md"),
+                self.module.ConventionEntry(origin="remote", source="fluxo-openspec-com-remocao-direta.tpl.md"),
+            ),
+            skills=None,
+            fingerprint=None,
+            checkout=None,
+        )
+
+        families = self.module.resolve_convention_families(PROJECT_ROOT, None, context)
+
+        self.assertEqual(
+            {family.parent.target_display for family in families},
+            {
+                "docs/conventions/fluxo-openspec-com-archive.md",
+                "docs/conventions/fluxo-openspec-com-remocao-direta.md",
+            },
+        )
+
     def test_resolve_skill_artifacts_validates_packages_and_destinations(self) -> None:
         repo_root = self.make_repo()
         repository = "git@example.com:org/agents.git"
@@ -2060,8 +2154,9 @@ class UpdateDocsSkillTests(unittest.TestCase):
                     (repo_root / link_path).symlink_to(repo_root / target_path)
 
                 context = self.module.load_runtime_context(repo_root)
-                with self.assertRaisesRegex(self.module.ValidationError, case["error"]):
+                with self.assertRaisesRegex(self.module.ValidationError, case["error"]) as error:
                     self.module.resolve_skill_artifacts(repo_root, checkout, context)
+                self.assertIn("skills.entries[].from", str(error.exception))
 
     def test_resolve_skill_artifacts_rejects_invalid_packages_and_symlinks(self) -> None:
         cases = [
@@ -2655,6 +2750,44 @@ class UpdateDocsSkillTests(unittest.TestCase):
         self.assertTrue((repo_root / "docs" / "conventions" / "grupo" / "alpha.md").is_file())
         self.assertTrue((repo_root / "docs" / "conventions" / "beta.md").is_file())
         self.assertTrue((repo_root / "docs" / "conventions" / "outra" / "nao-remover.md").is_file())
+
+    def test_sync_repository_removes_stale_generated_convention_targets(self) -> None:
+        repo_root = self.make_repo()
+        repository = "git@example.com:org/agents.git"
+        ref = "ffffffffffffffffffffffffffffffffffffffff"
+
+        write_text(
+            repo_root / "agents-compose.yml",
+            build_manifest(
+                repository,
+                ref,
+                "docs/conventions",
+                "templates/docs/conventions-local",
+                "templates/docs/conventions",
+                [
+                    {"origin": "remote", "from": "beta.tpl.md"},
+                ],
+                root=True,
+            ),
+        )
+        write_text(repo_root / "templates" / "AGENTS.tpl.md", "# AGENTS\n")
+        write_text(
+            repo_root / "templates" / "docs" / "conventions" / "beta.tpl.md",
+            build_convention_source(
+                "Beta",
+                "Texto beta.",
+                ["card beta"],
+            ),
+        )
+        generated_notice = "\n".join(self.module.GENERATED_NOTICE)
+        write_text(repo_root / "docs" / "conventions" / "alpha.md", f"{generated_notice}\n\n# Alpha antiga\n")
+        write_text(repo_root / "docs" / "conventions" / "manual.md", "# Manual\n")
+
+        self.module.sync_repository(repo_root)
+
+        self.assertFalse((repo_root / "docs" / "conventions" / "alpha.md").exists())
+        self.assertTrue((repo_root / "docs" / "conventions" / "beta.md").is_file())
+        self.assertTrue((repo_root / "docs" / "conventions" / "manual.md").is_file())
 
 
 if __name__ == "__main__":

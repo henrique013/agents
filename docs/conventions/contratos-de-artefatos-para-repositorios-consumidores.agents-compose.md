@@ -74,7 +74,47 @@ Não use `outputs.skills.entries` para declarar a skill reservada `update-docs`.
 | `origin` | use `local` para pacote mantido no repositório consumidor ou `remote` para pacote vindo da base compartilhada |
 | `from` | use o caminho do diretório de pacote relativo ao `tpl_dir` da origem escolhida |
 
-Neste repositório, `update-docs` é declarado em `agents.bootstrap.skill`; `update-version` é declarado como `origin: local` e `from: update-version`.
+Um repositório que publica skills normais pode declarar entradas locais ou remotas, por exemplo `origin: local` e `from: minha-skill`. Repositórios sem skills normais podem omitir `outputs.skills`.
+
+## Caminhos relativos seguros em `entries[].from`
+
+Os campos `conventions.entries[].from` e `skills.entries[].from` devem usar um caminho relativo seguro.
+
+Um caminho relativo seguro:
+
+- é uma string não vazia
+- é relativo ao `tpl_dir` selecionado pelo campo `origin`
+- não é absoluto
+- não contém segmentos `..`
+- resolve, inclusive após symlinks, dentro do `tpl_dir` selecionado
+- aponta para o tipo de fonte esperado pela entrada
+
+Formas inválidas incluem:
+
+| Forma inválida | Motivo |
+|---|---|
+| string vazia ou só espaços | não identifica uma fonte |
+| `/tmp/fonte.tpl.md` | caminho absoluto |
+| `../fonte.tpl.md` | travessia para fora do `tpl_dir` |
+| `grupo/../../fonte.tpl.md` | travessia por segmento `..` |
+| caminho que passa por symlink para fora do `tpl_dir` | escape da raiz de fontes selecionada |
+
+`conventions.entries[].from` deve apontar para um arquivo `.tpl.md` de `convention` pai pertencente à origem declarada.
+Não aponte para diretório, arquivo publicado `.md`, arquivo fora do `tpl_dir` ou `subconvention` filha.
+
+`skills.entries[].from` deve apontar para um diretório de pacote de `skill` pertencente à origem declarada.
+Esse diretório deve conter `SKILL.md` na raiz.
+
+## Colisões de saída
+
+Entradas diferentes não podem produzir o mesmo artefato publicado.
+
+| Tipo de entrada | Saída publicada | Regra |
+|---|---|---|
+| `conventions.entries[]` | `<outputs.AGENTS.md.include.conventions.out_dir>/<caminho>.md` | duas entradas não podem publicar o mesmo arquivo de `convention` |
+| `skills.entries[]` | `<outputs.skills.out_dir>/<caminho>/` | duas entradas não podem publicar o mesmo pacote de `skill` normal |
+
+Quando houver colisão, o manifesto é inválido e o fluxo de publicação deve falhar antes de sobrescrever a saída.
 
 ## Exemplos de `agents`
 
@@ -103,18 +143,18 @@ agents:
 
 - Use apenas os blocos públicos esperados em `outputs.AGENTS.md.include.conventions`: `out_dir`, `local`, `remote` e `entries`.
 - Declare `agents.root` como booleano.
-- Declare `agents.bootstrap.skill` como `update-docs`.
+- Declare `agents.bootstrap.skill` como `update-docs`, porque esse nome de bootstrap é fixo por contrato.
 - Não declare `agents.source` quando `agents.root` for `true`.
 - Declare `agents.source.repository` e `agents.source.ref` quando `agents.root` for `false`.
-- Não use os campos legados `agents.repository` e `agents.ref`.
+- Não declare campos de origem diretamente sob `agents`; mantenha `repository` e `ref` dentro de `agents.source`.
 - `outputs.skills` é opcional. Quando existir, use apenas os blocos públicos esperados: `out_dir`, `local`, `remote` e `entries`.
 - Use apenas `tpl_dir` dentro dos blocos `local` e `remote` de `conventions` e `skills`.
 - Use apenas `origin` e `from` em cada item de `entries`.
 - Faça cada item de `conventions.entries` apontar para um arquivo-fonte pai, não para uma `subconvention` filha.
 - Faça cada item de `skills.entries` apontar para um diretório de pacote que contenha `SKILL.md` na raiz.
-- Use em `conventions.entries[].from` apenas um arquivo `.tpl.md` que pertença à origem declarada pelo campo `origin`.
-- Use em `skills.entries[].from` apenas um caminho relativo seguro para um diretório de skill que pertença à origem declarada pelo campo `origin`.
-- Não declare `update-docs` em `outputs.skills.entries`, porque `.codex/skills/update-docs/` é reservado ao bootstrap e à autoatualização da própria skill.
+- Use em `conventions.entries[].from` apenas caminho relativo seguro para um arquivo `.tpl.md` que pertença à origem declarada pelo campo `origin`.
+- Use em `skills.entries[].from` apenas caminho relativo seguro para um diretório de skill que pertença à origem declarada pelo campo `origin`.
+- Não declare `update-docs` em `outputs.skills.entries`, porque a skill de bootstrap é reservada ao bootstrap e à autoatualização, fora da publicação normal controlada por `outputs.skills.entries`.
 
 ## O que esta convention não decide
 

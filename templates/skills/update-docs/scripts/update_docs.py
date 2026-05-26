@@ -702,6 +702,10 @@ def validate_skills_output(outputs: dict[str, Any]) -> SkillsOutput | None:
         parsed_entries.append(validate_skill_entry(raw_entry, index, local_tpl_dir, remote_tpl_dir))
 
     for index, entry in enumerate(parsed_entries, start=1):
+        if entry.source == BOOTSTRAP_SKILL_NAME:
+            raise ManifestError(
+                f"entrada de skill #{index} publica a skill de bootstrap reservada: {BOOTSTRAP_SKILL_NAME}"
+            )
         destination_path = Path(out_dir) / entry.source
         try:
             destination_path.relative_to(PUBLISHED_SKILL_PATH)
@@ -994,12 +998,25 @@ def resolve_convention_family(
     remote_tpl_dir: str,
     is_root: bool = False,
 ) -> ConventionFamily:
-    resolution = resolve_convention_source(entry, repo_root, checkout, local_tpl_dir, remote_tpl_dir, is_root)
+    try:
+        resolution = resolve_convention_source(entry, repo_root, checkout, local_tpl_dir, remote_tpl_dir, is_root)
+    except ValidationError as exc:
+        raise ValidationError(
+            f"conventions.entries[].from inválido ({entry.origin}: {entry.source!r}): {exc}"
+        ) from exc
     source_path = resolution.source_path
     source_root = resolution.source_root
     tpl_dir = resolution.tpl_dir
+    if source_path.is_dir():
+        raise ValidationError(
+            f"conventions.entries[].from inválido ({entry.origin}: {entry.source!r}): "
+            "esperado arquivo .tpl.md, recebeu diretório"
+        )
     if not source_path.is_file():
-        raise ValidationError(f"fonte de convention ausente: {source_path}")
+        raise ValidationError(
+            f"conventions.entries[].from inválido ({entry.origin}: {entry.source!r}): "
+            f"fonte de convention ausente: {source_path}"
+        )
     classification = classify_convention_filename(source_path.name, entry.origin)
     if classification is None:
         if entry.origin == "remote":
@@ -1045,20 +1062,33 @@ def resolve_convention_family(
 
 def ensure_unique_convention_targets(artifacts: Iterable[ConventionArtifact]) -> None:
     targets: dict[str, list[ConventionArtifact]] = {}
+    resolved_targets: dict[Path, list[ConventionArtifact]] = {}
     for artifact in artifacts:
         targets.setdefault(artifact.target_display, []).append(artifact)
+        resolved_targets.setdefault(artifact.target_path.resolve(strict=False), []).append(artifact)
 
     duplicate_targets = [
         (target_display, sorted(items, key=lambda artifact: artifact.source_display))
         for target_display, items in targets.items()
         if len(items) > 1
     ]
-    if not duplicate_targets:
+    if duplicate_targets:
+        target_display, items = sorted(duplicate_targets, key=lambda item: item[0])[0]
+        sources = ", ".join(f"'{artifact.source_display}'" for artifact in items)
+        raise ValidationError(f"destino publicado duplicado: {target_display!r} ({sources})")
+
+    duplicate_resolved_targets = [
+        (target_path, sorted(items, key=lambda artifact: artifact.target_display))
+        for target_path, items in resolved_targets.items()
+        if len(items) > 1
+    ]
+    if not duplicate_resolved_targets:
         return
 
-    target_display, items = sorted(duplicate_targets, key=lambda item: item[0])[0]
+    target_path, items = sorted(duplicate_resolved_targets, key=lambda item: item[0].as_posix())[0]
+    displays = ", ".join(f"'{artifact.target_display}'" for artifact in items)
     sources = ", ".join(f"'{artifact.source_display}'" for artifact in items)
-    raise ValidationError(f"destino publicado duplicado: {target_display!r} ({sources})")
+    raise ValidationError(f"destino publicado duplicado por caminho resolvido: {target_path} ({displays}; {sources})")
 
 
 def remove_file_if_exists(path: Path) -> None:
@@ -1080,6 +1110,40 @@ def cleanup_legacy_targets(artifacts: Iterable[ConventionArtifact]) -> None:
             continue
         remove_file_if_exists(legacy_target_path)
         seen_legacy_targets.add(legacy_target_path)
+
+
+def has_generated_notice(path: Path) -> bool:
+    if path.is_symlink() or not path.is_file():
+        return False
+    try:
+        lines = read_text(path).splitlines()
+    except UnicodeDecodeError:
+        return False
+    return tuple(lines[: len(GENERATED_NOTICE)]) == GENERATED_NOTICE
+
+
+def cleanup_stale_generated_convention_targets(
+    repo_root: Path,
+    out_dir: str,
+    artifacts: Iterable[ConventionArtifact],
+) -> None:
+    published_root = (repo_root / out_dir).resolve(strict=False)
+    if not is_within(published_root, repo_root):
+        raise ValidationError(f"diretório publicado de conventions fora da raiz: {out_dir!r}")
+    if not published_root.is_dir():
+        return
+
+    current_targets = {artifact.target_path.resolve(strict=False) for artifact in artifacts}
+    for candidate in sorted(published_root.rglob("*.md")):
+        if candidate.is_symlink() or not candidate.is_file():
+            continue
+        candidate_path = candidate.resolve(strict=False)
+        if candidate_path in current_targets:
+            continue
+        if not is_within(candidate_path, published_root):
+            continue
+        if has_generated_notice(candidate):
+            candidate.unlink()
 
 
 def resolve_convention_families(
@@ -1203,8 +1267,14 @@ def resolve_skill_artifact(
     skills: SkillsOutput,
     is_root: bool = False,
 ) -> SkillArtifact:
-    source_path = resolve_skill_source_path(entry, repo_root, checkout, skills, is_root)
-    validate_skill_package(source_path)
+    try:
+        source_path = resolve_skill_source_path(entry, repo_root, checkout, skills, is_root)
+    except ValidationError as exc:
+        raise ValidationError(f"skills.entries[].from inválido ({entry.origin}: {entry.source!r}): {exc}") from exc
+    try:
+        validate_skill_package(source_path)
+    except ValidationError as exc:
+        raise ValidationError(f"skills.entries[].from inválido ({entry.origin}: {entry.source!r}): {exc}") from exc
     destination_path, destination_display = resolve_skill_destination_path(repo_root, skills.out_dir, entry.source)
     return SkillArtifact(
         source_path=source_path,
@@ -1404,6 +1474,7 @@ def sync_repository(repo_root: Path) -> SyncOutcome:
         changed_paths.append(agents_path)
 
     cleanup_legacy_targets(all_artifacts)
+    cleanup_stale_generated_convention_targets(repo_root, context.conventions_out_dir, all_artifacts)
     changed_paths.extend(publish_skill_artifacts(skill_artifacts))
 
     return SyncOutcome(written_paths=tuple(changed_paths))

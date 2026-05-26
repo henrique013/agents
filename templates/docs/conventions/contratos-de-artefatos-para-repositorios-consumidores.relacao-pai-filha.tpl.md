@@ -2,7 +2,7 @@
 
 <!-- AGENT-CARD START -->
 Leia este documento ao organizar uma família de `convention` com subconventions em um repositório consumidor.
-Use este documento para nomear arquivos, manter o vínculo pai e filha e prever os artefatos publicados.
+Use este documento para nomear arquivos, manter o vínculo pai e filha, prever os artefatos publicados e descobrir subconventions acionadas.
 <!-- AGENT-CARD END -->
 
 Este documento explica como a relação entre `convention` pai e `subconvention` filha funciona na autoria e na publicação.
@@ -11,7 +11,7 @@ Este documento explica como a relação entre `convention` pai e `subconvention`
 
 - Esta `convention` vale para criação, revisão, renomeação e reorganização de `conventions` com subconventions relacionadas.
 - Use este documento quando precisar decidir nomes de arquivos, vínculo entre pai e filha ou destino publicado esperado.
-- Este documento cobre apenas a relação estrutural entre arquivos-fonte relacionados.
+- Este documento cobre a relação estrutural entre arquivos-fonte relacionados e a descoberta operacional de subconventions.
 - Este documento não substitui a `convention` de composição, que continua explicando a diferença entre fonte, manifesto e artefato final publicado.
 
 ## Padrão de nomeação
@@ -32,6 +32,14 @@ Este documento explica como a relação entre `convention` pai e `subconvention`
 - Toda `subconvention` filha depende da existência do arquivo pai correspondente.
 - Não trate um arquivo filho como válido de forma isolada, sem o pai da mesma raiz.
 - Registre no manifesto apenas o arquivo pai da família.
+
+## Descoberta operacional
+
+- `AGENTS.md` lista `conventions` pai como pontos de entrada de descoberta, não como inventário exaustivo de toda `subconvention` publicada.
+- Quando uma `convention` pai tiver seção `Quando ler as subconventions`, use essa seção para continuar a descoberta no caso concreto.
+- Leia toda `subconvention` filha acionada pela tarefa antes de decidir, propor, implementar ou revisar a mudança.
+- Não trate uma `subconvention` filha como globalmente obrigatória quando a tarefa concreta não acionar sua regra de leitura.
+- Mantenha o manifesto com entradas da `convention` pai; não registre a `subconvention` filha diretamente para compensar a descoberta.
 
 ## Correspondência com os artefatos publicados
 

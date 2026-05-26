@@ -1,8 +1,8 @@
 # Autoria e Publicação de Conventions
 
 <!-- AGENT-CARD START -->
-Leia este documento ao criar, remover, renomear ou alterar o escopo de uma `convention` neste repositório.
-Use este documento para separar autoria de fonte e publicação de artefatos derivados.
+Leia este documento ao criar, remover, renomear ou alterar o escopo de uma `convention` neste repositório ou ao entender a publicação de versão Git local.
+Use este documento para separar autoria de fonte, publicação de artefatos derivados e o fluxo local `update-version`.
 <!-- AGENT-CARD END -->
 
 Esta `convention` define o fluxo correto para mudanças em `conventions` no repositório `agents`.
@@ -17,10 +17,10 @@ Esta `convention` define o fluxo correto para mudanças em `conventions` no repo
 
 Ao criar ou alterar uma `convention`, trate como fonte de verdade apenas:
 
-- o arquivo template correspondente em `templates/docs/conventions-local/` ou `templates/docs/conventions/`
+- o arquivo template correspondente nas raízes configuradas por `outputs.AGENTS.md.include.conventions.local.tpl_dir` ou `outputs.AGENTS.md.include.conventions.remote.tpl_dir`; no manifesto atual deste repositório, esses campos valem `templates/docs/conventions-local/` e `templates/docs/conventions/`
 - a entrada correspondente em `outputs.AGENTS.md.include.conventions.entries` dentro de `agents-compose.yml`
 
-Não trate `AGENTS.md` nem `docs/conventions/*.md` como fonte de verdade.
+Não trate `AGENTS.md` nem arquivos publicados no diretório configurado por `outputs.AGENTS.md.include.conventions.out_dir` como fonte de verdade; no manifesto atual deste repositório, esse diretório vale `docs/conventions/`.
 
 ## 2. O que o agente pode fazer na fase de autoria
 
@@ -32,12 +32,12 @@ Quando o pedido for criar ou ajustar uma `convention`, o agente deve limitar a m
 O agente não deve:
 
 - editar manualmente `AGENTS.md`
-- criar ou editar manualmente arquivos em `docs/conventions/`
+- criar ou editar manualmente arquivos no diretório configurado por `outputs.AGENTS.md.include.conventions.out_dir`
 - executar `update-docs` como desdobramento implícito da autoria
 
 ## 3. Como a sincronização acontece
 
-A materialização de `AGENTS.md`, de `docs/conventions/` e das skills normais declaradas acontece pelo fluxo público `update-docs`.
+A materialização de `AGENTS.md`, do diretório configurado por `outputs.AGENTS.md.include.conventions.out_dir` e das skills normais declaradas acontece pelo fluxo público `update-docs`.
 
 Nesse fluxo:
 
@@ -47,14 +47,14 @@ Nesse fluxo:
 - em `agents.root: false`, a skill usa o checkout pinado declarado em `agents.source.repository/ref` para entradas `origin: remote`
 - a skill regenera os artefatos publicados a partir das fontes e do manifesto
 
-Fora desse fluxo, trate `AGENTS.md` e `docs/conventions/` como saídas derivadas que não devem ser editadas manualmente.
+Fora desse fluxo, trate `AGENTS.md` e o diretório configurado por `outputs.AGENTS.md.include.conventions.out_dir` como saídas derivadas que não devem ser editadas manualmente.
 
 ## 4. Como o versionamento acontece
 
 A publicação de versão Git acontece pelo fluxo `update-version`.
 Esse fluxo valida o estado do repositório, prepara artefatos derivados quando necessário, sincroniza metadados de versão e cria uma tag anotada no commit versionado.
 
-`update-version` pode chamar o fluxo público `update-docs`, criar commits necessários de preparação da release, publicar `main` e publicar a tag Git correspondente. Ele não atualiza `agents-compose.yml` nem `agents.ref`.
+`update-version` pode chamar o fluxo público `update-docs`, criar commits necessários de preparação da release, publicar `main` e publicar a tag Git correspondente. Ele não atualiza `agents-compose.yml` nem refs de origem de consumidores em `agents.source.ref`.
 
 ## 5. Regra de interpretação
 

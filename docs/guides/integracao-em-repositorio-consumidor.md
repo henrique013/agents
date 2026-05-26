@@ -124,14 +124,23 @@ editar fontes ou agents-compose.yml
 
 ## 5. OpenSpec opcional
 
-Para adotar o fluxo OpenSpec enxuto, inclua a convention remota:
+Para adotar OpenSpec, escolha uma convention remota de fechamento.
+
+Use `Archive` quando o repositório quiser preservar histórico OpenSpec, archives ou specs permanentes:
 
 ```yaml
 - origin: remote
-  from: fluxo-openspec-enxuto.tpl.md
+  from: fluxo-openspec-com-archive.tpl.md
 ```
 
-Para fechar uma change descartável sem arquivar, remova diretamente o diretório ativo correspondente em `openspec/changes/<change-id>/` pela árvore de arquivos do projeto.
+Use remoção direta quando o repositório quiser tratar changes concluídas como artefatos temporários:
+
+```yaml
+- origin: remote
+  from: fluxo-openspec-com-remocao-direta.tpl.md
+```
+
+Inclua apenas uma das duas conventions em uso normal. Ao atualizar `agents.source.ref` para uma versão que remove `fluxo-openspec-enxuto.tpl.md`, substitua a entrada antiga por uma dessas duas opções.
 
 Não declare `update-docs` em `outputs.skills.entries`, porque ela já é a skill de bootstrap declarada em `agents.bootstrap.skill`.
 
