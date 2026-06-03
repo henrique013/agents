@@ -2,41 +2,45 @@
 
 Use esta rubrica antes de responder à pessoa usuária. O validador mecânico não substitui esta revisão.
 
-## Autocontenção
+## Regra central
 
-- O próximo agente consegue iniciar sem ler o chat original.
-- Decisões possuem consequência operacional, não apenas contexto.
-- Fatos e assunções estão separados.
-- Referências a arquivos, comandos e caminhos são concretas.
+Um bom handoff permite que outro agente execute o trabalho sem ler o chat original.
 
-## Acionabilidade
+Verborragia não é densidade operacional. Cada seção deve reduzir incerteza, orientar ação ou definir evidência.
 
-- Os próximos passos começam por uma ação clara.
-- Critérios de aceite em `dod.md` são verificáveis.
-- Evidências mínimas indicam como comprovar o resultado.
-- Riscos têm mitigação inicial ou condição de pausa.
-
-## Auditabilidade
-
-- `log.md` começa com uma entrada `initialization`.
-- Mudanças futuras de plano têm regra explícita de atualização em `dod.md`.
-- Eventos futuros têm tipos previstos e lugar claro para registro.
-- O destino `.tmp/prompts/<slug-topic>/` aparece como saída temporária, não contrato durável.
+`dod.md` e `log.md` não compensam um `prompt.md` pobre.
 
 ## Sinais de falha
 
-- O texto depende de "como dito acima", "conforme conversado" ou referência semelhante.
-- O handoff resume a conversa por ordem de mensagens em vez de organizar decisões.
-- Decisões, fatos e assunções aparecem misturados.
-- Há critérios genéricos como "funcionar", "ficar bom" ou "revisar tudo" sem evidência.
-- `dod.md` não deixa claro quando o trabalho termina.
-- `log.md` não permite registrar mudança de plano ou bloqueio.
+Falhe o handoff quando:
+
+- a raiz contiver arquivos em vez de somente pastas `vN/`;
+- houver versões não contíguas, como `v1/` e `v3/` sem `v2/`;
+- `prompt.md`, `dod.md` ou `log.md` embutirem múltiplas versões no mesmo arquivo;
+- o `prompt.md` serviria para qualquer tarefa com pequenas trocas de nome;
+- o texto depender de "como dito acima", "conforme conversado" ou referência semelhante;
+- o handoff resumir a conversa por ordem de mensagens em vez de organizar decisões;
+- decisões, fatos e assunções aparecerem misturados;
+- houver frases como "validar qualidade", "revisar tudo", "implementar conforme necessário" ou "ajustar se preciso" sem evidência ou ação concreta;
+- critérios de aceite forem subjetivos, como "ficar bom" ou "funcionar";
+- não houver diagnóstico do estado atual;
+- não houver consequência operacional para decisões;
+- não houver resultado final visual quando houver fluxo, arquitetura, decomposição ou estado alvo;
+- uma versão nova depender do chat para explicar o que mudou;
+- `dod.md` não deixar claro quando o trabalho termina;
+- `log.md` não permitir retomada por evento numerado.
 
 ## Checklist final
 
-- [ ] `prompt.md` é suficiente para continuação por outro agente.
-- [ ] `dod.md` define aceite e evidência mínima.
-- [ ] `log.md` é append-only e tem evento inicial.
-- [ ] Não há placeholders óbvios nos artefatos finais.
-- [ ] Não há referência relativa ao chat original.
-- [ ] A validação mecânica foi executada e o resultado foi reportado.
+- [ ] A raiz contém somente pastas `v1/..vN/`.
+- [ ] A versão ativa é a maior pasta contígua.
+- [ ] Cada pasta de versão contém `prompt.md`, `dod.md` e `log.md`.
+- [ ] `prompt.md` tem origem, objetivo e diagnóstico da versão.
+- [ ] Decisões, fatos, assunções, restrições e riscos estão separados.
+- [ ] Escopo dentro e fora está explícito.
+- [ ] Plano e critérios são verificáveis.
+- [ ] Há visual útil quando o trabalho depende de fluxo, hierarquia ou estado alvo.
+- [ ] `dod.md` usa IDs e referências de log com prefixo da versão.
+- [ ] `log.md` tem evento inicial numerado.
+- [ ] Não há placeholders óbvios nem referência relativa ao chat.
+- [ ] A validação mecânica foi executada e reportada.

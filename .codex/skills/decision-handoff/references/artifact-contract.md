@@ -1,104 +1,96 @@
 # Contrato dos artefatos de handoff
 
-Use este contrato para revisar se `prompt.md`, `dod.md` e `log.md` ficaram úteis para outro agente continuar o trabalho sem depender do chat original.
+Use este contrato para revisar se um handoff permite continuar o trabalho sem depender do chat original.
 
-## Regras gerais
+## Layout
 
-- O handoff deve ser autocontido, concreto e operacional.
-- O chat é fonte de entrada, não saída.
-- Não copie transcript, sequência cronológica de mensagens ou referências relativas como "como conversado".
-- Separe decisão, fato, assunção, restrição, risco e pendência. Essas categorias não são intercambiáveis.
-- Não duplique o mesmo conteúdo em todos os arquivos. Cada artefato tem responsabilidade própria.
-
-## prompt.md
-
-Campos obrigatórios:
-
-- `Objetivo`: resultado concreto esperado.
-- `Escopo`: o que entra e o que fica fora.
-- `Decisões Confirmadas`: escolhas já tomadas e suas consequências.
-- `Fatos Relevantes`: informações verificáveis usadas como base.
-- `Assunções`: hipóteses que ainda podem precisar de validação.
-- `Restrições`: limites técnicos, operacionais ou políticos.
-- `Riscos`: riscos concretos com impacto e mitigação inicial.
-- `Próximos Passos`: ações executáveis em ordem útil.
-- `Artefatos Esperados`: entregáveis, arquivos, diffs, comandos ou evidências.
-- `Instruções Para Execução`: como o próximo agente deve usar o handoff.
-- `Manutenção de dod.md e log.md`: regra para manter aceite e histórico alinhados.
-
-Exemplo aceitável:
+O handoff é uma raiz com pastas versionadas:
 
 ```text
-- Decisão: manter o change OpenSpec como artefato temporário e remover o diretório ativo depois da validação.
-- Consequência: não arquivar specs permanentes para esta mudança.
+.tmp/prompts/<slug-topic>/
+├── v1/
+│   ├── prompt.md
+│   ├── dod.md
+│   └── log.md
+└── vN/
+    ├── prompt.md
+    ├── dod.md
+    └── log.md
 ```
 
-Exemplo inaceitável:
+A raiz deve conter somente diretórios `v1/`, `v2/`, etc. Não use `INDEX.md`, `current`, symlink, cópia `latest` ou arquivos `prompt.md`, `dod.md` e `log.md` na raiz.
+
+A versão ativa é a maior pasta `vN` contígua. Se houver `v1/` e `v3/` sem `v2/`, o handoff está inválido.
+
+## Responsabilidades
+
+| Artefato | Responsabilidade | Evite |
+|---|---|---|
+| `vN/prompt.md` | Contexto, diagnóstico, decisões, escopo, plano, critérios, riscos e resultado visual da versão. | Resumo cronológico do chat, plano genérico, conteúdo de outra versão ou `## Plano vN` dentro do arquivo. |
+| `vN/dod.md` | Checklist vivo da versão, com IDs, status, evidência mínima, evidência atual e vínculo com `vN/log.md`. | Misturar versões, repetir todo o prompt ou marcar item sem evidência. |
+| `vN/log.md` | Eventos numerados da versão, plano vigente, ação, evidência e próximo estado retomável. | Narrativa solta, reescrita de histórico ou eventos de outra versão. |
+
+IDs `DOD-*` e `LOG-*` reiniciam em cada pasta. Referências entre arquivos devem incluir a versão, como `v3/DOD-001` ou `v3/LOG-001`.
+
+## Conteúdo por versão
+
+Em `v1`, escreva o contrato inicial completo.
+
+Em `v2+`, repita a estrutura visual completa, mas escreva somente o delta em relação à versão anterior. Se uma categoria não mudou, registre `Sem mudança nesta versão.`.
+
+Isso mantém cada versão pequena, executável e independente do chat, sem copiar integralmente versões anteriores.
+
+## Contexto suficiente
+
+Há contexto suficiente quando o agente consegue definir objetivo, diagnóstico, decisões, fatos, assunções, restrições, escopo, plano, critérios, riscos, evidências e pontos em aberto da versão.
+
+Pause quando faltar decisão fechada, objetivo concreto, diagnóstico mínimo, escopo autorizado, evidência para fatos, próximos passos verificáveis ou decisão sobre destino existente.
+
+## Exemplos
+
+Exemplo aceitável de raiz:
 
 ```text
-- Como falamos antes, seguir com a ideia combinada.
+.tmp/prompts/refatorar-skill/v1/prompt.md
+.tmp/prompts/refatorar-skill/v1/dod.md
+.tmp/prompts/refatorar-skill/v1/log.md
+.tmp/prompts/refatorar-skill/v2/prompt.md
+.tmp/prompts/refatorar-skill/v2/dod.md
+.tmp/prompts/refatorar-skill/v2/log.md
 ```
 
-## dod.md
-
-Campos obrigatórios:
-
-- versão ativa do plano
-- checklist de status
-- critérios de aceite verificáveis
-- evidências mínimas
-- papel responsável
-- vínculo explícito com `log.md`
-
-Exemplo aceitável:
+Exemplo inaceitável de raiz:
 
 ```text
-- [ ] O manifesto contém a nova entry e a saída publicada foi regenerada pelo fluxo público.
+.tmp/prompts/refatorar-skill/prompt.md
+.tmp/prompts/refatorar-skill/dod.md
+.tmp/prompts/refatorar-skill/log.md
+.tmp/prompts/refatorar-skill/v2/prompt.md
 ```
 
-Exemplo inaceitável:
+Exemplo aceitável de DOD:
 
 ```text
-- [ ] Tudo funcionando.
+| DOD-001 | Template de log versionado por pasta. | passa | Inspeção do template. | `assets/log.template.md` usa destino em `v2/`. | v2/LOG-001 |
 ```
 
-## log.md
-
-Campos obrigatórios:
-
-- convenção append-only
-- tipos de evento aceitos
-- pelo menos uma entrada inicial `initialization`
-- versão do plano
-- resumo da fonte sem copiar o chat
-- destino do handoff
-- lista dos artefatos gerados
-
-Exemplo aceitável:
+Exemplo inaceitável de `prompt.md`:
 
 ```text
-### 2026-06-03 10:30 - initialization
+## Plano v2 - Ajuste de escopo
 
-- Plano: v1
-- Resumo da fonte: decisão de criar pacote de skill remoto com validador mecânico.
-- Destino: `.tmp/prompts/decision-handoff-skill/`
-```
+### Objetivo
 
-Exemplo inaceitável:
-
-```text
-### Inicial
-
-- Ver chat acima.
+Como falamos antes, continuar a mudança.
 ```
 
 ## Separação das categorias
 
-- Decisão: escolha confirmada que orienta execução.
-- Fato: informação verificável e não controversa dentro do contexto.
-- Assunção: hipótese usada provisoriamente.
-- Restrição: limite que reduz opções válidas.
-- Risco: possibilidade de falha com impacto.
-- Pendência: algo ainda não decidido ou não executado.
-
-Se uma frase couber em mais de uma categoria, escolha a categoria de maior utilidade operacional e explicite a incerteza.
+| Categoria | Definição | Sinal prático |
+|---|---|---|
+| Decisão | Escolha confirmada que orienta execução. | Gera consequência operacional. |
+| Fato | Informação verificável. | Tem evidência concreta. |
+| Assunção | Hipótese provisória. | Tem forma de validação e ação se for falsa. |
+| Restrição | Limite que reduz opções válidas. | Proíbe ou obriga comportamento. |
+| Risco | Possibilidade de falha com impacto. | Tem mitigação e condição de pausa. |
+| Pendência | Algo ainda não decidido ou não executado. | Deve aparecer em pontos em aberto. |

@@ -1,58 +1,118 @@
-# Handoff Prompt
+---
+type: decision-handoff
+target_repository: `<caminho do repositório ou ambiente alvo>`
+handoff_version: `<vN>`
+---
+
+# `<slug-topic>` - Prompt De Execução
+
+## Versão
+
+- Versão: `<vN>`
+- Atualizado em: `<YYYY-MM-DD>`
+- Motivo da versão: `<criação inicial, mudança de plano ou correção de contrato>`
+- Regra de conteúdo: em `v1`, escreva o contrato completo; em `v2+`, repita esta estrutura e escreva somente o delta da versão.
+
+## Origem E Motivação
+
+Explique por que esta versão existe e qual problema ela resolve para o próximo agente.
+Não copie o chat: reconstrua o contexto em termos de decisão, bloqueio, transferência ou escopo aprovado.
 
 ## Objetivo
 
-`<descreva o resultado concreto que o próximo agente deve alcançar>`
+Descreva o resultado concreto esperado nesta versão. O objetivo deve ser verificável e suficiente para orientar execução sem ler o chat original.
+
+## Diagnóstico Do Estado Atual
+
+Descreva o estado atual, a lacuna para o estado desejado e a causa provável. Inclua uma estrutura visual real quando isso ajudar a entender fluxo, arquitetura, pipeline, decomposição por área ou plano multi-etapa.
+
+## Decisões Confirmadas
+
+| ID | Decisão | Motivo | Consequência operacional | Alternativas descartadas |
+|---|---|---|---|---|
+| D1 | `<decisão já confirmada nesta versão>` | `<motivo>` | `<ação ou restrição para o próximo agente>` | `<alternativas que não devem ser reabertas sem nova evidência>` |
+
+## Fatos Relevantes
+
+| ID | Fato | Evidência | Impacto |
+|---|---|---|---|
+| F1 | `<informação verificável desta versão>` | `<arquivo, comando, diff, saída ou outra evidência concreta>` | `<como o fato afeta a execução>` |
+
+## Assunções
+
+| ID | Assunção | Como validar | Ação se for falsa |
+|---|---|---|---|
+| A1 | `<hipótese usada provisoriamente nesta versão>` | `<inspeção, teste ou confirmação>` | `<como pausar, revisar plano ou ajustar escopo>` |
+
+## Restrições
+
+- `<limite técnico, operacional, político ou de escopo desta versão>`
+- `<regra de idioma, segurança, confirmação, repositório, ambiente ou arquivo gerado quando relevante>`
 
 ## Escopo
 
 ### Dentro do escopo
 
-- `<item dentro do escopo>`
+- `<ação, arquivo, área ou entregável autorizado nesta versão>`
 
 ### Fora do escopo
 
-- `<item fora do escopo>`
+- `<ação próxima ou útil que não deve ser feita nesta versão>`
 
-## Decisões Confirmadas
+## Plano De Execução
 
-- `<decisão tomada e consequência operacional>`
+1. Preflight: `<instruções, estado Git, arquivos e riscos a conferir antes de editar>`
+2. Execução: `<mudanças autorizadas e ordem recomendada>`
+3. Validação: `<comandos, inspeções ou evidências necessárias>`
+4. Fechamento: `<como registrar evidência e reportar resultado>`
 
-## Fatos Relevantes
+## Critérios De Aceite
 
-- `<fato verificável que o próximo agente pode usar como base>`
-
-## Assunções
-
-- `<assunção explícita que ainda pode precisar de validação>`
-
-## Restrições
-
-- `<restrição técnica, operacional, de prazo, política ou repositório>`
+| ID | Critério | Evidência mínima |
+|---|---|---|
+| CA-01 | `<critério verificável e específico desta versão>` | `<comando, diff, inspeção ou artefato que prova o critério>` |
 
 ## Riscos
 
-- `<risco concreto, impacto esperado e mitigação inicial>`
-
-## Próximos Passos
-
-1. `<próxima ação executável>`
+| ID | Risco | Impacto | Mitigação | Quando pausar |
+|---|---|---|---|---|
+| R1 | `<risco concreto desta versão>` | `<dano provável>` | `<mitigação inicial>` | `<condição de pausa ou nova decisão>` |
 
 ## Artefatos Esperados
 
-- `<arquivo, diff, relatório, comando validado ou outro entregável esperado>`
+- `<arquivo, diff, relatório, comando validado, evidência ou entregável desta versão>`
+
+## Contrato Para O Próximo Agente
+
+- Comece pelo maior diretório `vN/` da raiz do handoff, depois confira `dod.md` e `log.md` na mesma pasta.
+- Siga as instruções ativas do repositório onde executar o trabalho.
+- Valide assunções antes de usá-las como fatos.
+- Pause se houver conflito de instruções, falta de contexto essencial, risco de segredo ou mudança de escopo.
+
+## Resultado Final Visual
+
+Inclua aqui uma árvore ou fluxo ASCII do estado final, plano, arquitetura ou relação entre artefatos desta versão. O desenho deve representar o problema real, não a estrutura deste template.
+
+```text
+<visual do problema real desta versão>
+```
+
+## Pontos Em Aberto
+
+- `<pergunta, decisão faltante ou confirmação que ainda pode afetar a execução desta versão>`
+- Se não houver ponto em aberto, declare isso explicitamente e cite a evidência.
 
 ## Instruções Para Execução
 
-- Comece lendo este `prompt.md`, depois confira `dod.md` e `log.md`.
-- Não dependa do histórico original do chat para executar o trabalho.
+- Não dependa do chat original.
 - Trate decisões, fatos, assunções, restrições e riscos como categorias diferentes.
-- Valide assunções antes de usá-las como fatos.
 - Se encontrar conflito entre este handoff e instruções ativas do repositório, siga a hierarquia de instruções do ambiente e registre o conflito em `log.md`.
+- Se faltar contexto para produzir o handoff neste nível de densidade, pause e peça a informação faltante.
 
-## Manutenção de dod.md e log.md
+## Manutenção de versões
 
-- `dod.md` contém a versão ativa do plano, critérios de aceite e evidências mínimas.
-- Antes de continuar após qualquer mudança de plano ou escopo, atualize `dod.md` para a nova versão do plano.
-- Depois de alterar plano, escopo, bloqueio ou evidência, acrescente um evento correspondente em `log.md`.
-- Preserve `log.md` como append-only, exceto por correção explícita de erro material registrada em novo evento.
+- Mudanças de plano, escopo, bloqueio ou evidência criam nova pasta `vN+1/`.
+- Em `v2+`, repita esta estrutura e registre somente o delta da nova versão.
+- Para categorias sem mudança, registre `Sem mudança nesta versão.`.
+- Não escreva versões diferentes no mesmo arquivo.
+- Não use `## Plano vN` dentro dos arquivos; a versão é a pasta `vN/`.
