@@ -54,3 +54,5 @@ outputs:
         from: update-version
       - origin: remote
         from: decision-handoff
+      - origin: remote
+        from: enhance-prompt
