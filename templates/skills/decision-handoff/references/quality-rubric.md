@@ -21,6 +21,7 @@ Falhe o handoff quando:
 - o texto depender de "como dito acima", "conforme conversado" ou referência semelhante;
 - o handoff resumir a conversa por ordem de mensagens em vez de organizar decisões;
 - decisões, fatos e assunções aparecerem misturados;
+- texto natural em `pt-BR` perder acentos, cedilha ou outros caracteres UTF-8 por normalização para ASCII;
 - houver frases como "validar qualidade", "revisar tudo", "implementar conforme necessário" ou "ajustar se preciso" sem evidência ou ação concreta;
 - critérios de aceite forem subjetivos, como "ficar bom" ou "funcionar";
 - não houver diagnóstico do estado atual;
@@ -37,6 +38,7 @@ Falhe o handoff quando:
 - [ ] Cada pasta de versão contém `prompt.md`, `dod.md` e `log.md`.
 - [ ] `prompt.md` tem origem, objetivo e diagnóstico da versão.
 - [ ] Decisões, fatos, assunções, restrições e riscos estão separados.
+- [ ] Texto natural em `pt-BR` preserva acentos, cedilha e UTF-8; apenas o slug do caminho fica sem acentos.
 - [ ] Escopo dentro e fora está explícito.
 - [ ] Plano e critérios são verificáveis.
 - [ ] Há visual útil quando o trabalho depende de fluxo, hierarquia ou estado alvo.

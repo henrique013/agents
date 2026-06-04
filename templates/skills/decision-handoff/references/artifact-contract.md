@@ -46,6 +46,12 @@ Há contexto suficiente quando o agente consegue definir objetivo, diagnóstico,
 
 Pause quando faltar decisão fechada, objetivo concreto, diagnóstico mínimo, escopo autorizado, evidência para fatos, próximos passos verificáveis ou decisão sobre destino existente.
 
+## Acentuação e UTF-8
+
+Use UTF-8 e preserve acentos, cedilha e demais caracteres naturais do `pt-BR` em `prompt.md`, `dod.md` e `log.md`.
+
+A normalização sem acentos é exclusiva do `<slug-topic>` usado no caminho. Não aplique essa regra ao conteúdo textual dos artefatos.
+
 ## Exemplos
 
 Exemplo aceitável de raiz:

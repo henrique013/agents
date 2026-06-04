@@ -49,6 +49,7 @@ Para um handoff novo, escreva sempre:
 ```
 
 `<slug-topic>` deve vir do objetivo concreto do handoff, em minúsculas, com termos separados por hífen e sem acentos. Prefira 3 a 8 palavras úteis.
+Essa normalização vale somente para nomes de diretório e caminhos técnicos. No conteúdo natural de `prompt.md`, `dod.md` e `log.md`, preserve UTF-8, acentos e cedilha em `pt-BR`; nunca converta a prosa para ASCII.
 
 Se `.tmp/prompts/<slug-topic>/` já existir:
 
@@ -66,7 +67,7 @@ Não crie `INDEX.md`, `current`, symlink ou cópia `latest` na raiz. A versão a
 5. Construa um handoff navegável e específico do problema, usando os templates de `assets/`.
 6. Consulte `references/artifact-contract.md` quando precisar separar responsabilidades entre `prompt.md`, `dod.md` e `log.md`.
 7. Consulte `references/quality-rubric.md` para cortar texto genérico antes de responder.
-8. Escreva `prompt.md`, `dod.md` e `log.md` dentro de `vN/`.
+8. Escreva `prompt.md`, `dod.md` e `log.md` dentro de `vN/`, preservando acentuação correta em todo texto natural `pt-BR`.
 9. Execute a validação mecânica na raiz ou na versão:
 
    ```bash

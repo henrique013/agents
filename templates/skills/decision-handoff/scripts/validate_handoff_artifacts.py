@@ -91,6 +91,61 @@ ALLOWED_DOD_STATUSES = {
     "dispensado",
 }
 
+PT_BR_ASCII_REGRESSIONS = {
+    "acao": "ação",
+    "acoes": "ações",
+    "aprovacao": "aprovação",
+    "assuncao": "assunção",
+    "assuncoes": "assunções",
+    "autorizacao": "autorização",
+    "codigo": "código",
+    "codigos": "códigos",
+    "conteudo": "conteúdo",
+    "conteudos": "conteúdos",
+    "criterio": "critério",
+    "criterios": "critérios",
+    "decisao": "decisão",
+    "decisoes": "decisões",
+    "diagnostico": "diagnóstico",
+    "diretorio": "diretório",
+    "diretorios": "diretórios",
+    "evidencia": "evidência",
+    "evidencias": "evidências",
+    "execucao": "execução",
+    "generico": "genérico",
+    "historico": "histórico",
+    "implementacao": "implementação",
+    "instrucao": "instrução",
+    "instrucoes": "instruções",
+    "intencao": "intenção",
+    "mecanica": "mecânica",
+    "mecanico": "mecânico",
+    "motivacao": "motivação",
+    "nao": "não",
+    "operacao": "operação",
+    "politica": "política",
+    "politicas": "políticas",
+    "proximo": "próximo",
+    "publicacao": "publicação",
+    "repositorio": "repositório",
+    "restricao": "restrição",
+    "restricoes": "restrições",
+    "revisao": "revisão",
+    "saida": "saída",
+    "seguranca": "segurança",
+    "semantica": "semântica",
+    "semantico": "semântico",
+    "temporario": "temporário",
+    "temporarios": "temporários",
+    "usuario": "usuário",
+    "usuarios": "usuários",
+    "usuaria": "usuária",
+    "validacao": "validação",
+    "versao": "versão",
+    "versoes": "versões",
+    "vinculo": "vínculo",
+}
+
 
 @dataclass(frozen=True)
 class Artifact:
@@ -108,6 +163,15 @@ class VersionArtifacts:
 
 def normalize_text(text: str) -> str:
     return text.replace("\r\n", "\n").replace("\r", "\n")
+
+
+def remove_markdown_code(text: str) -> str:
+    def preserve_line_count(match: re.Match[str]) -> str:
+        return "\n" * match.group(0).count("\n")
+
+    text = re.sub(r"^```.*?^```", preserve_line_count, text, flags=re.MULTILINE | re.DOTALL)
+    text = re.sub(r"`[^`\n]+`", "", text)
+    return text
 
 
 def read_artifact(path: Path) -> str:
@@ -305,6 +369,20 @@ def validate_generic_phrases(artifact: Artifact) -> list[str]:
     return errors
 
 
+def validate_pt_br_accent_preservation(artifact: Artifact) -> list[str]:
+    errors: list[str] = []
+    searchable_text = remove_markdown_code(artifact.text)
+    for ascii_word, expected_word in PT_BR_ASCII_REGRESSIONS.items():
+        pattern = re.compile(rf"\b{re.escape(ascii_word)}\b", re.IGNORECASE)
+        for match in pattern.finditer(searchable_text):
+            found = match.group(0)
+            errors.append(
+                f"{artifact.path}:{line_number(searchable_text, match.start())}: "
+                f"texto natural em pt-BR sem acento: {found!r}; use {expected_word!r}"
+            )
+    return errors
+
+
 def validate_minimum_content(artifact: Artifact) -> list[str]:
     minimum = MIN_WORDS[artifact.name]
     count = word_count(artifact.text)
@@ -485,6 +563,7 @@ def validate_version(version_set: VersionArtifacts) -> list[str]:
         errors.extend(validate_placeholders(artifact))
         errors.extend(validate_relative_chat_references(artifact))
         errors.extend(validate_generic_phrases(artifact))
+        errors.extend(validate_pt_br_accent_preservation(artifact))
         errors.extend(validate_minimum_content(artifact))
         errors.extend(validate_no_embedded_versions(artifact))
         errors.extend(validate_artifact_version_metadata(version_set.version, artifact))
