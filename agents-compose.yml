@@ -50,5 +50,7 @@ outputs:
     remote:
       tpl_dir: templates/skills
     entries:
+      - origin: remote
+        from: prompt-awesome
       - origin: local
         from: update-version
