@@ -36,4 +36,4 @@ Usos existentes de `UUIDv4` ou de outras versões não devem ser refatorados nem
 - Se o projeto já tiver uma biblioteca instalada capaz de gerar a versão necessária, prefira essa biblioteca.
 - Se não houver suporte nativo nem biblioteca instalada para gerar `UUIDv7`, sugira uma biblioteca comum e mantida para a stack de trabalho.
 - Não implemente gerador local manual de UUID como substituto de suporte mantido pela stack.
-- Antes de instalar nova dependência, respeite a política de confirmação e instalação de dependências do repositório.
+- Antes de instalar nova dependência, respeite o workflow de instalação de dependências do repositório e as políticas superiores do ambiente.

@@ -25,11 +25,11 @@ Use este documento para orientar a criação e a evolução de `skills` que comb
 - Scripts internos só devem existir quando houver uma etapa realmente mecânica, estável e justificável.
 - O uso de script é ferramenta pontual de execução, não substituto do raciocínio do agente.
 
-## Gate externo e checkpoints internos
+## Checkpoints de workflow
 
-- Quando uma `skill` estiver coberta por uma exceção explícita à política global de confirmação, o gate externo genérico não deve interromper o fluxo antes da hora.
-- Nesses casos, qualquer checkpoint de confirmação, coleta adicional de contexto ou pausa deliberada deve ser definido pela própria `skill`.
-- Remover o gate externo genérico não significa autorizar execução irrestrita; significa apenas que a decisão sobre onde pausar passa a pertencer ao workflow público da `skill`.
+- Quando uma `skill` precisar pausar antes de uma etapa de alto impacto, esse checkpoint deve estar definido no workflow público da própria `skill`.
+- Qualquer checkpoint, coleta adicional de contexto ou pausa deliberada prevista pela `skill` deve pertencer ao workflow dela.
+- Declarar checkpoints próprios não significa autorizar execução irrestrita; significa tornar explícito onde o fluxo deve pausar.
 
 ## Quando a decisão deve ficar com o agente
 
@@ -52,7 +52,7 @@ Use este documento para orientar a criação e a evolução de `skills` que comb
 - Se um script existir, ele deve executar e validar; ele não deve adivinhar intenção.
 - Script interno não deve inferir sozinho política semântica complexa a partir de sinais indiretos, heurísticas incidentais ou aproximações frágeis.
 - Determinismo incorreto é pior do que decisão semântica explícita, porque transmite falsa segurança e pode falhar silenciosamente.
-- Se a `skill` precisar de confirmação em algum ponto, o workflow deve declarar esse checkpoint explicitamente em vez de depender de um gate externo genérico para pausar no momento certo.
+- Se a `skill` precisar pausar em algum ponto, o workflow deve declarar esse checkpoint explicitamente.
 
 ## Antipadrões
 

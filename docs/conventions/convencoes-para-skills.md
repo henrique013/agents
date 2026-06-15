@@ -9,7 +9,7 @@ Este documento é o ponto de entrada para o tema `skills` neste repositório.
 
 - Esta `convention` reúne orientações gerais sobre `skills`.
 - Use este documento quando estiver criando, revisando ou ajustando uma `skill`.
-- Use este documento para decidir o que pertence ao workflow público da `skill`, incluindo checkpoints internos de confirmação quando eles forem necessários.
+- Use este documento para decidir o que pertence ao workflow público da `skill`, incluindo checkpoints explícitos quando eles forem necessários.
 - Quando a decisão exigir separar responsabilidade entre agente e automação determinística, leia a subconvention de semântica e determinismo.
 
 ## Diretórios de skills
@@ -41,10 +41,10 @@ Esses valores atuais não devem ser usados como regra fixa em repositórios cons
 - Não declare `update-docs` em `outputs.skills.entries`; use `agents.bootstrap.skill: update-docs`, fixo por contrato.
 - Pacotes de skills normais publicados em `outputs.skills.out_dir` devem ser copiados como diretórios inteiros, sem aviso de arquivo gerado, renderização Markdown ou normalização textual.
 
-## Checkpoints de confirmação
+## Checkpoints de workflow
 
-- A `skill` é responsável pelos próprios checkpoints de confirmação, coleta adicional de contexto e pausas deliberadas previstos no seu workflow.
-- Quando uma `skill` fizer parte de uma exceção explícita à política global de confirmação, isso remove apenas o gate externo genérico; não elimina checkpoints internos definidos pela própria `skill`.
+- A `skill` é responsável pelos próprios checkpoints, coleta adicional de contexto e pausas deliberadas previstos no seu workflow.
+- Quando uma `skill` precisar pausar antes de uma etapa relevante, esse checkpoint deve estar definido no workflow público da própria `skill`.
 - Esta regra vale para `skills` do OpenSpec e para qualquer outra `skill` publicada pelos repositórios consumidores.
 
 ## Quando ler as subconventions
