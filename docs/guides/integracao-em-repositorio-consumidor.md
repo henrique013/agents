@@ -36,7 +36,7 @@ agents:
   root: false
   source:
     repository: git@github.com:henrique013/agents.git
-    ref: v2.6.1
+    ref: v3.0.0
   bootstrap:
     skill: update-docs
 
@@ -92,7 +92,7 @@ Exemplo usando uma cópia temporária da base:
 
 ```sh
 tmp_dir="$(mktemp -d)"
-git clone --depth 1 --branch v2.6.1 git@github.com:henrique013/agents.git "$tmp_dir"
+git clone --depth 1 --branch v3.0.0 git@github.com:henrique013/agents.git "$tmp_dir"
 mkdir -p bin
 cp "$tmp_dir/bin/agents-bootstrap.py" bin/agents-bootstrap.py
 rm -rf "$tmp_dir"
