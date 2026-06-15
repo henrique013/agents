@@ -11,9 +11,9 @@ Trate a própria habilidade como a interface pública deste fluxo.
 ## Fluxo
 
 - Use a habilidade `update-docs` para sincronizar a documentação normativa e as skills normais declaradas do repositório.
-- Quando a pessoa pedir para atualizar a documentação ou as skills normais declaradas, execute o fluxo `update-docs` imediatamente; não compare o conteúdo antes de rodar.
+- Quando o usuário pedir para atualizar a documentação ou as skills normais declaradas, execute o fluxo `update-docs` imediatamente; não compare o conteúdo antes de rodar.
 - O script interno é só a implementação do ponto de entrada da habilidade e não deve ser apresentado à pessoa como o fluxo normal.
-- Só use o script interno explicitamente quando a pessoa pedir esse script ou quando o trabalho for implementar, depurar ou testar a própria habilidade.
+- Só use o script interno explicitamente quando o usuário pedir esse script ou quando o trabalho for implementar, depurar ou testar a própria habilidade.
 - O script lê `agents-compose.yml` e exige `agents.root` como seletor explícito de modo.
 - O script exige `agents.bootstrap.skill: update-docs`; esse valor é fixo por contrato e essa skill é reservada ao bootstrap e à autoatualização.
 - Em `agents.root: true`, o script usa somente fontes locais deste repositório: o template-base fixo `templates/AGENTS.tpl.md`, as raízes configuradas em `outputs.AGENTS.md.include.conventions.remote.tpl_dir` e `outputs.AGENTS.md.include.conventions.local.tpl_dir`, e a fonte fixa de bootstrap `templates/skills/update-docs/`.

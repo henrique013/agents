@@ -36,7 +36,7 @@ Use este documento para orientar a criação e a evolução de `skills` que comb
 ## Quando a decisão deve ficar com o agente
 
 - Definir classificação de mudança, prioridade, impacto, exceção ou estratégia.
-- Interpretar intenção da pessoa usuária, contexto do repositório, diff, instruções publicadas e consequências sobre consumidores.
+- Interpretar intenção do usuário, contexto do repositório, diff, instruções publicadas e consequências sobre consumidores.
 - Escolher entre múltiplos caminhos plausíveis quando a resposta não puder ser deduzida por regra objetiva.
 - Decidir parâmetros semânticos que depois serão consumidos por uma etapa mecânica.
 
@@ -75,7 +75,7 @@ Use este documento para orientar a criação e a evolução de `skills` que comb
 
 - Classificar impacto ou tipo de mudança quando isso depender de interpretação contextual, como em decisões sobre `major`, `minor` ou `patch`.
 - Definir tipo, descrição ou agrupamento de commits quando houver mais de uma organização plausível para a mesma alteração.
-- Interpretar intenção da pessoa usuária, exceções, prioridades ou impacto sobre repositórios consumidores.
+- Interpretar intenção do usuário, exceções, prioridades ou impacto sobre repositórios consumidores.
 - Escolher estratégia de execução quando existirem múltiplos caminhos válidos e a diferença entre eles depender de julgamento.
 
 ### Indícios de tarefa determinística

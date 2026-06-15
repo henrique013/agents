@@ -39,12 +39,12 @@ O diretório operacional de skills também pode conter pacotes externos gerados 
 - Faça mudanças de inclusão, remoção, renomeação, reordenação ou origem no manifesto de composição aplicável.
 - Trate `AGENTS.md`, `conventions` finais, `subconventions` finais e pacotes de skills publicados ou gerados como artefatos materializados.
 - Não edite manualmente esses artefatos publicados para refletir mudanças em `conventions` ou `skills`, mesmo quando a mudança parecer pequena ou localizada.
-- Se a pessoa pedir alteração em um arquivo final publicado, interprete esse pedido como mudança na fonte ou no manifesto aplicáveis.
+- Se o usuário pedir alteração em um arquivo final publicado, interprete esse pedido como mudança na fonte ou no manifesto aplicáveis.
 - Quando a dúvida for sobre qual arquivo mexer, descubra primeiro se o pedido altera conteúdo autoral ou a composição da publicação.
 
 ## Como aplicar uma mudança
 
-1. Identifique se o alvo citado pela pessoa é fonte, manifesto ou artefato final publicado.
+1. Identifique se o alvo citado pelo usuário é fonte, manifesto ou artefato final publicado.
 2. Se o alvo for um artefato final publicado, localize a fonte correspondente e o manifesto que o inclui na publicação.
 3. Edite apenas a fonte e o manifesto que realmente precisam mudar.
 4. Se for necessário materializar artefatos publicados, use o fluxo público de sincronização/publicação configurado no repositório.

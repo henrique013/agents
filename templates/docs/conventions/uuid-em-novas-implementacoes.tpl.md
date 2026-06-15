@@ -5,7 +5,7 @@ Leia este documento ao implementar, revisar ou escolher geração de UUID em có
 Use este documento para decidir a versão padrão de UUID e preservar exceções explícitas do projeto.
 <!-- AGENT-CARD END -->
 
-Use `UUIDv7` como padrão para novas implementações que precisem gerar UUID quando a pessoa usuária não pedir uma versão específica e quando não houver restrição técnica contrária.
+Use `UUIDv7` como padrão para novas implementações que precisem gerar UUID quando o usuário não pedir uma versão específica e quando não houver restrição técnica contrária.
 
 ## Regra principal
 
@@ -19,12 +19,12 @@ Use `UUIDv7` como padrão para novas implementações que precisem gerar UUID qu
 
 Não aplique o padrão `UUIDv7` quando:
 
-- a pessoa usuária pedir explicitamente `UUIDv4`, `UUIDv5` ou outra versão suportada pelo contexto
+- o usuário pedir explicitamente `UUIDv4`, `UUIDv5` ou outra versão suportada pelo contexto
 - contrato externo exigir outra versão ou outro formato de identificador
 - schema existente, API pública, framework, banco, biblioteca ou integração exigir versão ou formato específico
 - o trabalho tocar código, schema ou dado existente que já use `UUIDv4` ou outra versão
 
-Usos existentes de `UUIDv4` ou de outras versões não devem ser refatorados nem migrados para `UUIDv7` sem pedido explícito da pessoa usuária.
+Usos existentes de `UUIDv4` ou de outras versões não devem ser refatorados nem migrados para `UUIDv7` sem pedido explícito do usuário.
 
 ## Opacidade e segurança
 

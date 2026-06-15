@@ -28,7 +28,7 @@ Este documento é o ponto de entrada para a política de idioma, codificação e
 Arquivo: `docs/conventions/idiomas-pt-br-e-en-us-e-buscas-textuais.chat.md`
 
 - Leia este documento ao responder, perguntar, resumir, planejar ou emitir atualizações intermediárias em chat.
-- Use este documento para manter a saída do agente em `pt-BR`, salvo pedido explícito da pessoa usuária.
+- Use este documento para manter a saída do agente em `pt-BR`, salvo pedido explícito do usuário.
 
 ### Artefatos OpenSpec
 

@@ -14,7 +14,7 @@
 - Evite repetir, enfeitar ou explicar demais.
 - Se houver escolha, diga a recomendação e o motivo em uma frase.
 - Se faltar informação, diga exatamente o que falta.
-- Use `pt-BR` em respostas, perguntas, planos, atualizações intermediárias e resumos finais, salvo quando a pessoa usuária pedir explicitamente outro idioma.
+- Use `pt-BR` em respostas, perguntas, planos, atualizações intermediárias e resumos finais, salvo quando o usuário pedir explicitamente outro idioma.
 
 ## Uso de Skills
 

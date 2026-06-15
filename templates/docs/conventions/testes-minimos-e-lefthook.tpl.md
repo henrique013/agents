@@ -14,7 +14,7 @@ Inclua esta convention apenas quando o repositório consumidor tiver testes e Le
 - Durante a implementação, rode a menor quantidade significativa de testes que cubra o risco da mudança atual.
 - Antes de subir mudanças para o repositório, deixe o hook `pre-push` do Lefthook rodar a suíte geral configurada pelo repositório.
 - Se a suíte geral falhar no `pre-push`, o `push` deve ser abortado.
-- Não contorne o hook com `--no-verify` ou mecanismo equivalente, salvo pedido explícito da pessoa usuária.
+- Não contorne o hook com `--no-verify` ou mecanismo equivalente, salvo pedido explícito do usuário.
 
 ## Durante a implementação
 

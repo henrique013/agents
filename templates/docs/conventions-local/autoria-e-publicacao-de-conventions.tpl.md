@@ -41,7 +41,7 @@ A materialização de `AGENTS.md`, do diretório configurado por `outputs.AGENTS
 
 Nesse fluxo:
 
-- a pessoa usuária decide executar `update-docs`
+- o usuário decide executar `update-docs`
 - a skill lê `agents-compose.yml`
 - em `agents.root: true`, a skill usa os templates locais deste repositório
 - em `agents.root: false`, a skill usa o checkout pinado declarado em `agents.source.repository/ref` para entradas `origin: remote`
@@ -58,6 +58,6 @@ Esse fluxo valida o estado do repositório, prepara artefatos derivados quando n
 
 ## 5. Regra de interpretação
 
-Se a pessoa pedir para criar uma nova `convention`, interprete esse pedido como autoria da fonte, não como sincronização imediata da publicação.
+Se o usuário pedir para criar uma nova `convention`, interprete esse pedido como autoria da fonte, não como sincronização imediata da publicação.
 
-Se a pessoa também quiser materializar a mudança nos artefatos publicados, isso depende de um pedido separado para executar a skill `update-docs`.
+Se o usuário também quiser materializar a mudança nos artefatos publicados, isso depende de um pedido separado para executar a skill `update-docs`.

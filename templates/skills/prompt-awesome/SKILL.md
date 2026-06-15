@@ -3,7 +3,7 @@ name: prompt-awesome
 description: Melhora um prompt para Codex usando o contexto do chat atual, salva o prompt final em .tmp/prompts/NNNN-[slug].md e responde somente com o link do arquivo.
 ---
 
-Use esta skill quando a pessoa usuária pedir para melhorar, reescrever ou preparar um prompt para Codex.
+Use esta skill quando o usuário pedir para melhorar, reescrever ou preparar um prompt para Codex.
 
 ## Tarefa corrente
 
@@ -17,9 +17,9 @@ Quando esta skill for acionada, transforme o material da chamada atual em um pro
 
 3. Não trate mensagens anteriores como entrada bruta a copiar, resumir ou reescrever por inteiro.
 
-4. Se a pessoa usuária delimitar explicitamente que o prompt deve usar somente o texto da chamada atual, respeite esse limite.
+4. Se o usuário delimitar explicitamente que o prompt deve usar somente o texto da chamada atual, respeite esse limite.
 
-5. Se a pessoa usuária pedir um prompt autocontido, um prompt para iniciar outro chat ou uma primeira mensagem de conversa, gere um prompt que não dependa do histórico atual.
+5. Se o usuário pedir um prompt autocontido, um prompt para iniciar outro chat ou uma primeira mensagem de conversa, gere um prompt que não dependa do histórico atual.
 
 6. Se não houver contexto anterior relevante, inclua no prompt final o contexto necessário para a tarefa funcionar.
 
@@ -39,7 +39,7 @@ Quando esta skill for acionada, transforme o material da chamada atual em um pro
 
 12. Por padrão, escreva o prompt final para continuar o chat atual. Ele pode depender do contexto já estabelecido na conversa quando isso deixar o prompt mais claro, direto e útil.
 
-13. Só torne o prompt autocontido quando a pessoa usuária pedir isso explicitamente, quando ela indicar uso em outro chat ou quando não houver contexto relevante no chat atual.
+13. Só torne o prompt autocontido quando o usuário pedir isso explicitamente, quando indicar uso em outro chat ou quando não houver contexto relevante no chat atual.
 
 14. Comece o arquivo gerado diretamente pelo objetivo do prompt. Use o primeiro conteúdo útil para declarar o objetivo, sem apresentação inicial.
 

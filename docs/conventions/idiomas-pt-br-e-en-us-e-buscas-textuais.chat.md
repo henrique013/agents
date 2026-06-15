@@ -3,14 +3,14 @@
 
 # Chat do Agente
 
-Esta subconvention define o idioma da conversa entre agente e pessoa usuária.
+Esta subconvention define o idioma da conversa entre agente e usuário.
 
 ## Regra central
 
 - Use `pt-BR` em respostas, perguntas, planos, atualizações intermediárias e resumos finais.
-- Use outro idioma apenas quando a pessoa usuária pedir explicitamente esse idioma para a conversa, resposta ou artefato solicitado.
+- Use outro idioma apenas quando o usuário pedir explicitamente esse idioma para a conversa, resposta ou artefato solicitado.
 - Respeite o idioma pedido apenas no escopo do pedido. Não transforme uma resposta pontual em mudança permanente para a conversa inteira.
-- Se a pessoa usuária escrever em outro idioma, isso não basta para mudar a saída padrão. A mudança depende de pedido explícito.
+- Se o usuário escrever em outro idioma, isso não basta para mudar a saída padrão. A mudança depende de pedido explícito.
 
 ## Exceções
 

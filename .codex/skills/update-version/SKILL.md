@@ -5,7 +5,7 @@ description: Gera a próxima versão semver deste repositório com prévia isola
 
 # Versionamento da release
 
-Use a skill `update-version` quando a pessoa quiser publicar uma nova versão semver do repositório `agents`.
+Use a skill `update-version` quando o usuário quiser publicar uma nova versão semver do repositório `agents`.
 Trate a própria skill como a interface pública do fluxo.
 
 ## Escopo
@@ -79,7 +79,7 @@ Antes de alterar a worktree principal, criar tag ou fazer push, apresente um ún
 - recursos externos afetados: branch `main` e tag Git em `origin`
 
 Não despeje a lista completa de comandos internos no fluxo normal.
-Mostre comandos internos somente se a pessoa pedir ou se forem necessários para explicar um erro.
+Mostre comandos internos somente se o usuário pedir ou se forem necessários para explicar um erro.
 
 Sem confirmação explícita do gate final, não altere a worktree principal, não crie commit, não crie tag e não faça push.
 
