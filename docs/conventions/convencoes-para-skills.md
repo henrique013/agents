@@ -41,6 +41,15 @@ Esses valores atuais não devem ser usados como regra fixa em repositórios cons
 - Não declare `update-docs` em `outputs.skills.entries`; use `agents.bootstrap.skill: update-docs`, fixo por contrato.
 - Pacotes de skills normais publicados em `outputs.skills.out_dir` devem ser copiados como diretórios inteiros, sem aviso de arquivo gerado, renderização Markdown ou normalização textual.
 
+## Paths no corpo da skill
+
+- Quando a `skill` citar arquivo ou diretório usado pelo próprio workflow, escreva o path com uma âncora explícita.
+- Use `[repo-root]/...` para caminhos resolvidos a partir da raiz do repositório consumidor.
+- Use `[skill-dir]/...` para caminhos internos ao diretório do pacote da própria `skill`, incluindo o diretório que contém `SKILL.md`.
+- Não use path relativo sem âncora como regra pública, como `.tmp/foo` ou `scripts/bar.py`, quando a base de resolução não estiver declarada.
+- Não use path absoluto local como regra pública; reserve esse formato para evidência operacional ou diagnóstico do ambiente atual.
+- Quando o caminho vier de manifesto, contrato ou campo normativo já publicado, prefira citar o campo correspondente em vez de cristalizar o valor literal atual do repositório.
+
 ## Checkpoints de workflow
 
 - A `skill` é responsável pelos próprios checkpoints, coleta adicional de contexto e pausas deliberadas previstos no seu workflow.

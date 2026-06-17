@@ -1,6 +1,6 @@
 ---
 name: prompt-awesome
-description: Melhora um prompt para Codex usando contexto do chat; quando chamada junto de outras skills, execute só prompt-awesome e trate as demais como material bruto; salva em .tmp/prompts/NNNN-[slug].md e responde só com o link.
+description: Melhora um prompt para Codex usando contexto do chat; quando chamada junto de outras skills, execute só prompt-awesome e trate as demais como material bruto; salva em [repo-root]/.tmp/prompts/NNNN-[slug].md e responde só com o link.
 ---
 
 Use esta skill quando o usuário pedir para melhorar, reescrever ou preparar um prompt para Codex.
@@ -10,7 +10,7 @@ Use esta skill quando o usuário pedir para melhorar, reescrever ou preparar um 
 - Transforme o material da chamada atual em um prompt melhor, usando o histórico relevante do chat como contexto semântico.
 - Se a chamada também mencionar outras skills, execute somente este fluxo.
 - Antes de escrever o prompt final, valide o destino com o modo de pré-flight do script interno.
-- Depois salve o prompt final em `.tmp/prompts/` pelo mesmo script e responda conforme a seção "Resposta".
+- Depois salve o prompt final em `[repo-root]/.tmp/prompts/` pelo mesmo script e responda conforme a seção "Resposta".
 
 ## Precedência operacional
 
@@ -57,15 +57,15 @@ Use esta skill quando o usuário pedir para melhorar, reescrever ou preparar um 
 
 ## Salvamento
 
-1. Antes de escrever o prompt final, execute `scripts/save_prompt.py --preflight` para validar se `.tmp/prompts/` pode receber um novo prompt.
+1. Antes de escrever o prompt final, execute `[skill-dir]/scripts/save_prompt.py --preflight` para validar se `[repo-root]/.tmp/prompts/` pode receber um novo prompt.
 
 2. Se o pré-flight falhar, pare sem escrever o prompt final e responda somente com a mensagem do problema.
 
 3. Se o pré-flight passar, decida o conteúdo final do prompt e um título curto, semântico e descritivo para o arquivo.
 
-4. Passe o prompt final para `scripts/save_prompt.py` pela entrada padrão e passe o título pelo argumento `--title`.
+4. Passe o prompt final para `[skill-dir]/scripts/save_prompt.py` pela entrada padrão e passe o título pelo argumento `--title`.
 
-O modo normal de `scripts/save_prompt.py` executa a parte mecânica final: revalidar `.tmp/prompts/`, normalizar o título em slug, calcular o próximo prefixo `NNNN`, salvar o arquivo final e retornar o caminho gerado.
+O modo normal de `[skill-dir]/scripts/save_prompt.py` executa a parte mecânica final: revalidar `[repo-root]/.tmp/prompts/`, normalizar o título em slug, calcular o próximo prefixo `NNNN`, salvar o arquivo final e retornar o caminho gerado.
 
 - Não reimplemente no corpo da skill as regras mecânicas de slug, validação da pasta, cálculo de prefixo ou montagem do nome final.
 - Não sobrescreva prompts existentes.

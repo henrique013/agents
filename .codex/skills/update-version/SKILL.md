@@ -11,8 +11,8 @@ Trate a própria skill como a interface pública do fluxo.
 ## Escopo
 
 - Esta skill publica `main` e uma tag anotada `vX.Y.Z` no `HEAD` versionado da release.
-- A fonte autoral é o pacote `update-version` declarado no manifesto em `outputs.skills.entries`; no manifesto atual deste repositório, ela resolve para `templates/skills-local/update-version/`.
-- A saída publicada é derivada de `outputs.skills.out_dir` e `outputs.skills.entries`; no manifesto atual deste repositório, ela resolve para `.codex/skills/update-version/` e deve ser materializada pelo fluxo público `update-docs`, não por edição manual.
+- A fonte autoral é o pacote `update-version` declarado no manifesto em `outputs.skills.entries`; no manifesto atual deste repositório, ela resolve para `[repo-root]/templates/skills-local/update-version/`.
+- A saída publicada é derivada de `outputs.skills.out_dir` e `outputs.skills.entries`; no manifesto atual deste repositório, ela resolve para `[repo-root]/.codex/skills/update-version/` e deve ser materializada pelo fluxo público `update-docs`, não por edição manual.
 - Antes do gate final, a worktree principal não deve receber alterações de arquivos, commits, tags ou push.
 - A preparação necessária para decidir a versão deve acontecer em uma prévia isolada.
 - A confirmação final autoriza somente os efeitos apresentados no resumo de publicação.
