@@ -60,7 +60,7 @@ agents:
   root: false
   source:
     repository: git@github.com:henrique013/agents.git
-    ref: v3.0.1
+    ref: v3.0.2
   bootstrap:
     skill: update-docs
 ```
